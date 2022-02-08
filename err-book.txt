@@ -1,0 +1,47 @@
+启动vue项目出现Module build failed (from ./node_modules/sass-loader/dist/cjs.js)
+    
+    **命令行输入后cnpm install node-sass --save(不能写-D，写-S)又报下面的错:
+
+error  in ./src/components/NoData.vue?vue&type=style&index=0&id=c8925c8a&lang=scss&scoped=true&
+Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):
+ModuleBuildError: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):
+Error: Node Sass version 7.0.1 is incompatible with ^4.0.0.
+
+    **命令行输入以下的：
+      cnpm uninstall node-sass
+      cnpm install node-sass@4.14.1
+      npm run serve
+
+--------------------------------------
+
+//vue.config.js报错vue is not defined是因为public/index.html内容还为默认还没有改,需要引入cdn,(vue is not defined的vue是config.externals.vue)
+
+--------------------------------------
+
+vue.config.js文件打包后部署服务端,页面有的显示不出来,浏览器的控制台报错和cmd报错(因为npm run build后devServer的target接口没调通,才报的这两个错):
+
+  浏览器的控制台报错
+    npm.element-ui.dabe9c70.js:1 Uncaught (in promise) TypeError: Cannot set properties of undefined (setting 'type')
+    at Function.l.<computed> [as error] (npm.element-ui.dabe9c70.js:1)
+    at app.d1f14c39.js:1
+
+  cmd有的接口是200,有的报错:
+2021-12-31T12:50:55.761Z]  "GET /api/products?categoryId=100012&pageSize=6" Error (404): "Not found"
+[2021-12-31T12:50:55.762Z]  "GET /api/products?categoryId=100012&pageSize=14" Error (404): "Not found"
+[2021-12-31T12:50:55.763Z]  "GET /api/user" Error (404): "Not found"
+[2021-12-31T12:50:55.764Z]  "GET /api/carts/products/sum" Error (404): "Not found"
+[2021-12-31T12:50:55.765Z]  "GET /imgs/slider/slide-4.jpg" "Mozilla/5.0 (Windows NT 10.0; WO
+
+解决方法:吧main.js和env.js的//aa解释了,然后打包运行再登录用户名和密码admin1可以看到显示No 'Access-Control-Allow-Origin',然后cmd输入chrome.exe --disable-web-security --user-data-dir=C:\MyChromeUserFata,
+或者注释掉//aa,打开谷歌文件地址,cmd输入chrome.exe --disable-web-security --user-data-dir=C:\MyChromeUserFata,两个方法页面都可以显示出来可是已登录后还有问题
+
+main.js的let baseURL = process.env.NODE_ENV === 'development' ? '/api' : env.baseURL;的env.baseURL和vue.config.js的target都是http://mall-pre.springboot.cn
+//aa有解释打包运行的话,就能更明白报错原因是因为后端跨域
+(这里说明npm run build后devServer的target接口没调通,所以解释了//a)
+
+npm run serve项目运行正常 --> npm run build --> cnpm i -g http-server --> cd dist --> http-server
+或者npm run serve项目运行正常 --> npm run build --> npm run start --> http://localhost:8092
+
+npm run serve默认走vue.config.js的target,部署服务端也应该是一样,可是后端没有设置跨域
+
+--------------------------------------

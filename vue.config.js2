@@ -1,0 +1,21 @@
+// 创建的vue.config.js文件是webpack的配置表，这个配置表会传送给node.js服务器来实现整个服务的设置,写完配置信息，需要重启(npm run serve)
+
+module.exports = { // node.js使用这个api(module.exports)导出
+    devServer: {
+        host: 'localhost', // 主机
+        port: 8080, // 端口
+        proxy: { // 代理，访问了/a接口，实际上代理了/b,实际上访问的是/b接口
+            '/api': { // 拦截到了虚拟/api接口，代理了慕课接口
+                target: 'http://mall-pre.springboot.cn', //target: 'https://www.imooc.com',
+                //1  changeOrigin: false,  报错，Uncaught SyntaxError: Unexpected token < 然后接口的数据显示空白或者404(指的是network的js-
+                //2  点击左侧的接口http://localhost:8080/u/loading?callback=__jp0-点击Preview)     404说明接口没有访问到
+
+                changeOrigin: true, //是否将目标头更改为目标的url地址
+                pathRewrite: { // 转发地址
+                    '/api': '',
+                }
+            }
+        }
+    },
+    // lintOnSave: false //可以吧eslint关掉  .then(res){里面没有写res什么的话，吧eslint关掉就不会报错}
+}
