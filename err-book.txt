@@ -42,6 +42,6 @@ main.js的let baseURL = process.env.NODE_ENV === 'development' ? '/api' : env.ba
 npm run serve项目运行正常 --> npm run build --> cnpm i -g http-server --> cd dist --> http-server
 或者npm run serve项目运行正常 --> npm run build --> npm run start --> http://localhost:8092
 
-npm run serve默认走vue.config.js的target,部署服务端也应该是一样,可是后端没有设置跨域
+npm run serve默认走vue.config.js的target,部署服务端也应该是一样,可是后端没有设置跨域(报错500，开发走/api，线上直接走真实接口)
 
 --------------------------------------
